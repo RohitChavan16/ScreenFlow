@@ -2,3 +2,11 @@ node_modules/
 client/node_modules/
 server/node_modules/
 .env
+
+# Optional: Ignore build/dist folders if you ever build the project
+dist/
+build/
+
+# Optional: Ignore system/editor files
+.vscode/
+.DS_Store
