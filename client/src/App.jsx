@@ -25,6 +25,7 @@ import { useContext } from 'react';
 import { useMovieContext } from './context/MovieContext';
 import { toast } from 'react-toastify';
 import AdminRoute from './components/admin/AdminLogin';
+import Loading from './components/Loading';
 
 function App() {
   const location = useLocation();
@@ -45,6 +46,7 @@ const path = location.pathname;
          <Route path = '/movies/:id' element = {<MovieDetails/>} />
          <Route path = '/movies/:id/:date' element = {<SeatLayout/>} />
          <Route path = '/my-bookings' element = {<MyBookings/>} />
+         <Route path = '/loading/:nextUrl' element = {<Loading/>} />
          <Route path = '/favorite' element = {<Favorite/>} />
           <Route path = '/login' element = {<Login/>} />
          <Route path = '/email-verify' element = {<EmailVerify/>} />

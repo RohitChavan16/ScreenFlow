@@ -53,8 +53,7 @@ if(selectedSeats.length === 0){
 } 
 const {data} = await axios.post('/api/booking/create', {showId: selectedTime.showId, selectedSeats}, {withCredentials: true});
 if (data.success){
-toast.success(data.message);
-navigate('/my-bookings');
+  window.location.href = data.url;
 }
     } catch(error){
      toast(error.message);
