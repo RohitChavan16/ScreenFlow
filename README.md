@@ -31,4 +31,7 @@ Frontend	React.js, Tailwind CSS, React Router
 Backend	Node.js, Express.js
 Database	MongoDB with Mongoose ODM
 Authentication	JWT (JSON Web Tokens)
-Payments	Stripe API (INR/paise support)
+Payments	Stripe API (INR/paise support).
+
+
+More features are to be include and this project is not completed yet.
