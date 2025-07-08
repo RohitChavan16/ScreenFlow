@@ -66,7 +66,7 @@ const Login = () => {
         onClick={() => navigate("/")}
         src={assets.logo}
         alt="logo"
-        className="absolute left-5 sm:left-15 top-5 w-28 sm:w-32 cursor-pointer"
+        className="absolute left-5 sm:left-15 top-5 w-40 sm:w-32 cursor-pointer"
       />
       <div className=" border-2 p-10 rounded-lg shadow-[0_0_20px_rgba(255,1162,0,0.3)] w-full sm:w-96 text-indigo-300 text-sm">
         <h2 className="text-3xl font-semibold text-white text-center mb-3">

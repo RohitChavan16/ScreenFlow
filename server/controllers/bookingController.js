@@ -44,13 +44,15 @@ return res.json({success: false, message: "Selected Seats are not available."});
 
 const showData = await Show.findById(showId).populate('movie');
 
+const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 // Create a new booking
 
 const booking = await Booking.create({
 user: userId,
 show: showId,
 amount: showData.showPrice * selectedSeats.length,
-bookedSeats: selectedSeats
+bookedSeats: selectedSeats,
+expiresAt   
 })
 
 selectedSeats.map((seat)=>{
@@ -69,11 +71,11 @@ const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY);
 
 const line_items = [{
 price_data: {
-currency:'usd',
+currency:'inr',
 product_data:{
 name: showData.movie.title
 },
-unit_amount: Math.floor(booking.amount) * 100
+unit_amount: Math.round(booking.amount) * 100
 },
 quantity: 1
 }];
