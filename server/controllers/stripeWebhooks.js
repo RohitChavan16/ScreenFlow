@@ -7,9 +7,7 @@ import { sendConfirmationEmail } from "../utils/sendConfirmationEmail.js";
 
 
 export const stripeWebhooks = async (request, response) => {
-     console.log('🚀 Stripe Webhook hit');
-       console.log('Headers:', request.headers);
-  console.log('Body:', request.body);
+     
   const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY);
   const sig = request.headers["stripe-signature"];
   let event;
@@ -40,11 +38,6 @@ export const stripeWebhooks = async (request, response) => {
         const user = await User.findById(booking.user);
         const movie = show ? await Movie.findById(show.movie) : null;
         
-console.log("Booking:", booking);
-console.log("User:", user);
-console.log("Show:", show);
-console.log("Movie:", movie);
-
         const htmlContent = `
           <h2>🎉 Booking Confirmed - ${movie?.title || 'Movie'}</h2>
           <p><strong>Show Time:</strong> ${show ? new Date(show.showDateTime).toLocaleString() : 'N/A'}</p>

@@ -21,7 +21,7 @@ const MyBookings = () => {
         setBookings(data.bookings);
       }
     } catch (error) {
-      console.log(error); 
+      console.log(error);
     }
     setIsLoading(false);
   };
@@ -35,19 +35,38 @@ const MyBookings = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const newTimers = {};
+      let expired = false;
+
       bookings.forEach(item => {
         if (!item.isPaid && item.expiresAt) {
           const expiry = new Date(item.expiresAt).getTime();
           const now = Date.now();
           const timeLeft = Math.max(Math.floor((expiry - now) / 1000), 0);
           newTimers[item._id] = timeLeft;
+          if (timeLeft === 0) expired = true;
         }
       });
+
       setTimers(newTimers);
+
+      // If any booking expired, refresh bookings to update UI
+      if (expired) {
+        getMyBookings();
+      }
+
     }, 1000);
 
     return () => clearInterval(interval);
   }, [bookings]);
+
+  // Poll every 10 seconds to fetch fresh bookings
+  useEffect(() => {
+    const refreshInterval = setInterval(() => {
+      getMyBookings();
+    }, 10000);
+
+    return () => clearInterval(refreshInterval);
+  }, []);
 
   const formatTime = (seconds) => {
     const min = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -61,6 +80,13 @@ const MyBookings = () => {
       <div><BlurCircle bottom="0px" left="600px" /></div>
 
       <h1 className='text-lg font-semibold mb-4'>My Bookings</h1>
+
+      <button
+        onClick={getMyBookings}
+        className="bg-amber-700 px-3 py-1 rounded text-sm mb-4 cursor-pointer"
+      >
+        🔄 Refresh Bookings
+      </button>
 
       {bookings.length === 0 && (
         <p className="text-gray-400">No bookings found.</p>
@@ -102,6 +128,10 @@ const MyBookings = () => {
                     <p className='text-gray-400 text-xs'>⛔ Booking expired</p>
                   )}
                 </div>
+              )}
+
+              {item.isPaid && (
+                <p className='text-green-500 text-sm mb-3'>✅ Payment Completed</p>
               )}
             </div>
 

@@ -4,7 +4,6 @@ import Booking from '../models/Booking.js';
 import Show from '../models/Show.js';
 
 cron.schedule('* * * * *', async () => {
-   console.log('⏳ Cron job running...');
   if (mongoose.connection.readyState !== 1) {
     console.log('⏳ Skipping cron: MongoDB not connected.');
     return;
