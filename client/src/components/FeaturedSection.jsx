@@ -17,7 +17,7 @@ return (
     <BlurCircle top='0' right='-80px' />
     <p className="text-gray-300 font-medium text-lg">Now Showing</p>
     
-    <button onClick={() => { navigate('/movies') }} className="group flex items-center gap-2 text-gray-300 cursor-pointer">
+    <button onClick={() => { navigate('/movies'); scrollTo(0,0) }} className="group flex items-center gap-2 text-gray-300 cursor-pointer">
       View All
       <ArrowRight className="group-hover:translate-x-0.5 transition w-4.5 h-4.5" />
     </button>

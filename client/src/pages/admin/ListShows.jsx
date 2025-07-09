@@ -3,6 +3,7 @@ import Title from '../../components/admin/Title';
 import dateFormat from '../../lib/dateFormat';
 import { dummyShowsData } from '../../assets/assets';
 import { useMovieContext } from '../../context/MovieContext';
+import BlurCircle from '../../components/BlurCircle';
 
 const ListShows = () => {
 
@@ -28,13 +29,14 @@ useEffect( ()=>{
 }, [user]);
 
 return (
-    <>
+    <div className="px-8 max-md:px-3 py-5">
         <Title text1="List" text2="Shows" />
+        <BlurCircle top='10px' right='1050px' />
 
 <div className="max-w-4xl mt-6 overflow-x-auto">
 <table className="w-full border-collapse rounded-md overflow-hidden text-nowrap">
 <thead>
-<tr className="bg-[color:#c4035b]/44 text-left text-white">
+<tr className="bg-[color:#fc7a00]/70 text-left text-white">
 <th className="p-2 font-medium pl-5">Movie Name</th>
 <th className="p-2 font-medium">Show Time</th>
 <th className="p-2 font-medium">Total Bookings</th>
@@ -54,7 +56,7 @@ return (
 </tbody>
 </table>
 </div>
-    </>
+    </div>
 );
 }
 

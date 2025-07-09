@@ -51,12 +51,12 @@ fetchDashboardData();
 }, [user]);
 
 return !loading ? (
-    <>
+    <div className="px-8 max-md:px-3 py-5">
 <Title text1="Admin" text2="Dashboard"/>
 
 <div className="relative flex flex-wrap gap-4 mt-6">
 
-<BlurCircle top="-100px" left="0" />
+<BlurCircle top="-120px" left="-39px" />
 
 <div className="flex flex-wrap gap-4 w-full">
 {dashboardCards.map((card, index) => (
@@ -76,7 +76,7 @@ return !loading ? (
 
 <div className="relative flex flex-wrap gap-6 mt-4 max-w-5x1">
 
-<BlurCircle top="100px" left="-10%" />
+<BlurCircle top="100px" left="-10px" />
 
 {dashboardData.activeShows.map((show) => (
 
@@ -98,7 +98,7 @@ return !loading ? (
 </div>
 ))}
 </div>
-    </>
+    </div>
 ) : <Loading/>;
 }
 

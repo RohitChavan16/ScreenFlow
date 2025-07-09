@@ -16,7 +16,8 @@ return (
     </p>
 <div className='relative mt-6'>
 
-<BlurCircle top='-100px' right='-100px' />
+<BlurCircle top='420px' right='00px' />
+<BlurCircle top='-100px' right='900px' />
 
 <ReactPlayer url={currentTrailer.videoUrl} controls={false} className="mx-auto max-w-full" width="960px" height="540px"/>
 </div>

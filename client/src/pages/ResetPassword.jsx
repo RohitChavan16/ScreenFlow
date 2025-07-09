@@ -82,12 +82,12 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br ">
+    <div className="flex items-center bg-[url('/astrobg.jpg')] bg-cover bg-center justify-center min-h-screen bg-gradient-to-br ">
       <img
         onClick={() => navigate("/")}
         src={assets.logo}
         alt="logo"
-        className="absolute left-5 sm:left-20 top-5 w-28 sm:w-32 cursor-pointer"
+        className="absolute left-5 sm:left-15 top-5 w-40 max-md:w-32 cursor-pointer"
       />
 
       {!isEmailSent && (

@@ -113,7 +113,7 @@ if (nowPlayingMovies.length === 0) {
 
 
 return nowPlayingMovies.length > 0 ? (
-<>
+<div className="w-full min-h-screen bg-[url('/AddShowBG.jpg')] bg-cover bg-center px-6 py-4">
 <Title text1="Add" text2="Shows" />
 
 <p className="mt-10 text-lg font-medium">Now Playing Movies</p>
@@ -196,11 +196,11 @@ Add Time
 </div>
 )}
 
-<button onClick={handleSubmit} disabled={addingShow} className="bg-amber-600 text-white px-8 py-2 mt-6 rounded hover:bg-amber-700 transition-all cursor-pointer" >
+<button onClick={handleSubmit} disabled={addingShow} className="bg-amber-600 text-white mx-3 px-8 py-2 mt-6 rounded hover:bg-amber-700 transition-all cursor-pointer" >
 Add Show
 </button>
 
- </>
+ </div>
 ) : <Loading/>
 }
 
