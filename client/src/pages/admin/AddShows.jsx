@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { dummyShowsData } from '../../assets/assets';
 import Loading from '../../components/Loading';
 import { CheckIcon, DeleteIcon, StarIcon } from 'lucide-react';
 import Title from '../../components/admin/Title';
@@ -18,7 +17,7 @@ const [showPrice, setShowPrice] = useState("");
 const {axios, user, image_base_url} = useMovieContext();
 const [loading, setLoading] = useState(true);
 const [addingShow, setAddingShow] = useState(false);
-
+const [screenType, setScreenType] = useState("Screen1");
 
 const fetchNowPlayingMovies = async() => {
  setLoading(true); 
@@ -75,7 +74,8 @@ const showsInput = Object.entries(dateTimeSelection).map(([date, time]) => ({dat
 const payload = {
 movieId: selectedMovie,
 showsInput,
-showPrice: Number (showPrice)
+showPrice: Number(showPrice),
+screenType
 }
 
  const { data } = await axios.post('/api/show/add', payload, { withCredentials: true });
@@ -91,7 +91,7 @@ toast.error(data.message);
 
 } catch (error) {
 console.error("Submission error:", error);
-toast.error('An error occurred. Please try again.');
+toast.error(error.response?.data?.message || 'An error occurred. Please try again.');
 }finally {
     setAddingShow(false);  
   }
@@ -148,7 +148,9 @@ return nowPlayingMovies.length > 0 ? (
 ))}
 </div>
 </div>
-{/*SHOW PRICE*/}
+
+
+{/*PRICE ENTRY*/}
 <div className="mt-8">
 <label className="block text-sm font-medium mb-2">Show Price</label>
 <div className="inline-flex items-center gap-2 border border-gray-600 px-3 py-2 rounded-md">
@@ -156,6 +158,20 @@ return nowPlayingMovies.length > 0 ? (
 <input min={0} type="number" value={showPrice} onChange={(e) => setShowPrice(e.target.value)} placeholder="Enter show price" className="outline-none" />
 </div>
 </div>
+
+
+<div className="mt-6 ">
+  <label className="block text-sm font-medium mb-2">Select Screen</label>
+  <select value={screenType} onChange={(e)=>setScreenType(e.target.value)} className="border border-gray-600 rounded-lg p-2 bg-transparent text-neutral-100">
+    
+    <option value="Screen1" className="bg-[#ce05a6] text-white">Screen 1</option>
+    <option value="Screen2" className="bg-[#b90495] text-white">Screen 2</option>
+    <option value="Screen3" className="bg-[#ce05a6] text-white">Screen 3</option>
+    <option value="Screen4" className="bg-[#b90495] text-white">Screen 4</option>
+  </select>
+
+</div>
+
 
 {/*DATE AND TIME*/}
 
@@ -196,7 +212,7 @@ Add Time
 </div>
 )}
 
-<button onClick={handleSubmit} disabled={addingShow} className="bg-amber-600 text-white mx-3 px-8 py-2 mt-6 rounded hover:bg-amber-700 transition-all cursor-pointer" >
+<button onClick={handleSubmit} disabled={addingShow || !selectedMovie || !screenType || !showPrice || Object.keys(dateTimeSelection).length === 0} className="bg-amber-600 text-white mx-3 px-8 py-2 mt-6 rounded transition-all cursor-pointer disabled:opacity-50" >
 Add Show
 </button>
 

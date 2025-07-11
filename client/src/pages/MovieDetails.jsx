@@ -30,7 +30,7 @@ console.log(error);
 
 const handleFavorite = async () => {
 try {
-console.log(user);
+//console.log(user);
 if(!user) return toast.error("Please login to proceed");
 const { data } = await axios.post('/api/user/update-favorite', {movieId: id}, { withCredentials: true});
 
@@ -98,7 +98,7 @@ Watch Trailer</button>
 </div>
 
 </div>
-) : < Loading />
+) : < Loading />  // show movieid is incorrect not just loading
 }
 
 export default MovieDetails; 

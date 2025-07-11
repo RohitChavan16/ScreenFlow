@@ -1,6 +1,9 @@
 import axios from "axios";
 import Show from "../models/Show.js";
 import Movie from "../models/Movie.js";
+import { sendConfirmationEmail } from "../utils/sendConfirmationEmail.js";
+import userModel from "../models/userModel.js";
+import { seatRecommendation } from "../utils/seatRecommendation.js";
 
 export const getNowPlayingMovies = async(req, res) => {
 
@@ -30,11 +33,48 @@ export const getNowPlayingMovies = async(req, res) => {
 
 
 
+
+
+const isScreenAvailable = async (screenType, showDateTime) => {
+  const existingShow = await Show.findOne({
+    screen: screenType,
+    showDateTime: showDateTime
+  });
+
+  return !existingShow; 
+};
+
+
+
+
+
+
+
+
 export const addShow = async (req, res) =>{
 
 try {
-const {movieId, showsInput, showPrice} = req.body
-let movie = await Movie.findById(movieId)
+const {movieId, showsInput, showPrice, screenType} = req.body;
+let movie = await Movie.findById(movieId);
+
+ for (const show of showsInput) {
+      const showDate = show.date;
+
+      for (const time of show.time) {
+        const dateTimeString = `${showDate}T${time}`;
+        const showDateTime = new Date(dateTimeString);
+
+        const available = await isScreenAvailable(screenType, showDateTime);
+
+        if (!available) {
+          return res.status(400).json({
+            success: false,
+            message: `❌ Screen ${screenType} is already booked for ${showDate} at ${time}.`,
+          });
+        }
+      }
+    }
+   
 if(!movie) {
 // Fetch movie details and credits from TMDB API
 const [movieDetailsResponse, movieCreditsResponse] = await Promise.all([
@@ -66,28 +106,50 @@ runtime: movieApiData.runtime,
 }
 
 // Add movie to the database
+
 movie = await Movie.create(movieDetails);
 }
 
-const showsToCreate = [];
+  const showsToCreate = [];
+    for (const show of showsInput) {
+      const showDate = show.date;
 
-showsInput.forEach(show => {
-const showDate = show.date;
+      for (const time of show.time) {
+        const dateTimeString = `${showDate}T${time}`;
+        const showDateTime = new Date(dateTimeString);
 
-show.time.forEach((time)=>{
-const dateTimeString = `${showDate}T${time}`;
-showsToCreate.push({
-movie: movieId,
-showDateTime: new Date(dateTimeString),
-showPrice,
-occupiedSeats: {}
-})
-})
-});
+        showsToCreate.push({
+          movie: movie._id,
+          screen: screenType,
+          showDateTime,
+          showPrice,
+          occupiedSeats: {},
+        });
+      }
+    }
 
 if(showsToCreate.length > 0){
    await Show.insertMany(showsToCreate);
-}
+
+      
+      const users = await userModel.find({}, 'email');
+
+     
+      const subject = `🎬 New Show Added: ${movie.title}`;
+      const htmlContent = `
+        <h2>New Show Alert: ${movie.title}</h2>
+        <p>A new show for <strong>${movie.title}</strong> has just been added to ScreenFlow!</p>
+        <p>Don't miss out. Book your tickets now!</p>
+        <a href="${process.env.FRONTEND_URL}/movies/${movieId}" style="background:#fe5454;color:white;padding:10px 15px;border-radius:5px;text-decoration:none;">View Show</a>
+      `;
+
+      for (const user of users) {
+        if (user.email) {
+          await sendConfirmationEmail(user.email, subject, htmlContent);
+        }
+      }
+    }
+
 
 res.json({success: true, message:'Show Added Successfully.'});
 } catch(error) {
@@ -148,7 +210,7 @@ export const getShow = async (req, res) =>{
 try {
 const {movieId} = req.params;
 // get all upcoming shows for the movie
-const shows = await Show.find({movie: movieId, showDateTime: { $gte: new Date() }})
+const shows = await Show.find({movie: movieId, showDateTime: { $gte: new Date() }});
 const movie = await Movie.findById(movieId);
 
 if (!movie) {
@@ -163,7 +225,7 @@ const date = show.showDateTime.toISOString().split("T")[0];
 if(!dateTime[date]) {
 dateTime [date] = []
 }
-dateTime[date].push({time: show.showDateTime, showId: show._id});
+dateTime[date].push({time: show.showDateTime, showId: show._id}); 
 })
 
 res.status(200).json({success: true, movie, dateTime});
@@ -172,3 +234,13 @@ console.error(error);
 res.status(500).json({ success: false, message: error.message });
 }
 }
+
+
+
+
+
+
+
+
+
+

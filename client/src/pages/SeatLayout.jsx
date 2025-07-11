@@ -16,7 +16,8 @@ const [show, setShow] = useState(null);
 const navigate = useNavigate();
 const {axios, user} = useMovieContext();
 const [occupiedSeats, setOccupiedSeats] = useState([]);
- 
+const [recommendedSeat, setRecommendedSeat] = useState(null);
+
 const getShow = async () =>{
 try {
 const { data } = await axios.get(`/api/show/${id}`, {withCredentials: true});
@@ -92,6 +93,29 @@ console.log(error);
 }
 }
 
+
+const handleRecommendSeat = async () => {
+  if (!selectedTime) {
+    return toast("Please select time first");
+  }
+console.log("Show ID:", selectedTime?.showId);
+  try {
+    const { data } = await axios.get(`/api/booking/recommend-seat/${selectedTime.showId}`, {withCredentials: true});
+    if (data.success && data.seat) {
+      setRecommendedSeat(data.seat);
+      toast.success(`Recommended Seat: ${data.seat}`);
+      setSelectedSeats(prev => prev.includes(data.seat) ? prev : [...prev, data.seat]);
+    } else {
+      toast.error(data.message || "No seat recommendation available");
+    }
+    
+  } catch (error) {
+    console.log(error);
+    toast.error("Failed to recommend seat");
+  }
+};
+
+
 useEffect(() => {
 getShow();
 }, [])
@@ -99,16 +123,33 @@ getShow();
 useEffect(()=>{
 if(selectedTime){
 getOccupiedSeats();
+  setRecommendedSeat(null);
+  setOccupiedSeats([]);
+    setSelectedSeats([]);
 }
 }, [selectedTime]);
 
-return show ? (
+return show ? ( <div>
+    
+    <button onClick={handleRecommendSeat} className="bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 
+             animate-bounce 
+             hover:scale-105 
+             hover:brightness-110 
+             shadow-lg 
+             text-white 
+             rounded-full 
+             px-5 py-2 text-sm 
+             transition-all duration-300 
+             mb-4 absolute top-35 left-41.5 cursor-pointer max-md:top-20 max-md:left-7.5 ">Recommend Best Seat For Me!</button>
+
+   
 <div className='flex flex-col md:flex-row px-6 md:px-16 lg:px-40 py-30 md:pt-50'>
 
-<div className='w-60 bg-[color:#fe5454]/14 border border-[color:#fe8765]/10 rounded-lg py-10 h-max md:sticky md:top-30'>
-<p className='text-lg font-semibold px-6'>Available Timings</p>
+<div className='w-60 bg-[color:#fe5454]/14 border border-[color:#fe8765]/10 rounded-lg py-7 h-max md:sticky md:top-30'>
 
-<div className=" mt-5 space-y-1">
+<p className='text-lg mt-1 font-semibold px-10'>Available Timings</p>
+
+<div className=" mt-7 space-y-1">
 
 {show.dateTime[date]?.map((item)=>(  // Add null checks before accessing show.dateTime[date]
 
@@ -121,7 +162,7 @@ key={item.time} onClick={()=> setSelectedTime(item)}>
 </div>
 </div>
 
-<div className='relative flex-1 flex flex-col items-center max-md:mt-16'>
+<div className='relative bottom-8 flex-1 flex flex-col items-center max-md:mt-16'>
 <BlurCircle top="-100px" left="-100px"/>
 <BlurCircle bottom="0" right="50px"/>
 <h1 className='text-2xl font-semibold mb-4'>Select your seat</h1>
@@ -140,13 +181,14 @@ key={item.time} onClick={()=> setSelectedTime(item)}>
 </div>
 </div>
 
-<button onClick={handleProceed} className='flex items-center gap-1 mt-20 px-10 py-3 text-sm bg-amber-600 hover:bg-amber-700 transition rounded-full font-medium cursor-pointer active:scale-95'>
+<button onClick={handleProceed} className='flex group items-center gap-1 mt-20 px-10 py-3 text-sm bg-amber-600 hover:bg-amber-700 transition rounded-full font-medium cursor-pointer active:scale-95'>
 Proceed to Checkout
-<ArrowRightIcon strokeWidth={3} className="w-4 h-4"/>
+<ArrowRightIcon strokeWidth={3} className="w-4 h-4 group-hover:translate-x-1 transition-transform"/>
 </button> {/* add here condition whether time and seat is selected or not */}
 
 </div>
 </div>
+ </div>
     ) : < Loading />
 }
 

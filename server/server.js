@@ -11,7 +11,7 @@ import { stripeWebhooks } from "./controllers/stripeWebhooks.js";
 import connectDB from "./config/mongodb.js";
 
 import './cron/bookingCleanup.js';
-import { sendConfirmationEmail } from "./utils/sendConfirmationEmail.js";
+
 
 const app = express();
 const port = process.env.PORT || 4000

@@ -2,12 +2,13 @@
 import Booking from "../models/Booking.js";
 import Show from "../models/Show.js";
 import stripe from 'stripe'
+import { seatRecommendation } from "../utils/seatRecommendation.js";
 
 // Function to check availability of selected seats for a movie
 const checkSeatsAvailability = async (showId, selectedSeats)=>{
 
 try {
-const showData = await Show.findById(showId)
+const showData = await Show.findById(showId);
 
 if(!showData) return false;
 const occupiedSeats = showData.occupiedSeats;  
@@ -19,6 +20,46 @@ return false;
 }
 }
 ////const doc = await Model.findById(id).lean(); LEAN it will make fast and return 	Plain JS Object Read-only, fast fetch and do not use when .save() or Updates, validations....
+
+
+
+
+
+
+
+
+
+
+
+export const getRecommendedSeat = async (req, res) => {
+  try {
+    const { showId } = req.params;
+
+     const showData = await Show.findById(showId);
+
+     if(!showData){
+        return res.json({success: false, message:'ShowId cha kahi ghotala ahe'});
+     }
+
+    const recommendedSeat = await seatRecommendation(showId);
+
+    if (!recommendedSeat) {
+      return res.status(404).json({ success: false, message: 'No available seats or show not found.' });
+    }
+
+    res.json({ success: true, seat: recommendedSeat });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+
+
+
+
+
+
 
 
 

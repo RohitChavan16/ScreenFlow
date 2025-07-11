@@ -10,7 +10,7 @@ export const sendConfirmationEmail = async (to, subject, htmlContent) => {
   };
  try {
     const info = await transporter.sendMail(mailOptions);
-    console.log(`✅ Email sent to ${to} | Message ID: ${info.messageId}`);
+    
   } catch (error) {
     console.error(`❌ Email failed to ${to}:`, error.message);
   }

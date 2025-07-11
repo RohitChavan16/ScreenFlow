@@ -138,8 +138,8 @@ export const updateFavorite = async (req, res) => {
       user.favorites = user.favorites.filter(item => item.toString() !== movieId.toString());
       message = "Favorite movie removed successfully.";
     }
-
-    await user.save();  // ✅ Save after both add or remove
+     
+    await user.save();  
 
     res.json({ success: true, message });
 
