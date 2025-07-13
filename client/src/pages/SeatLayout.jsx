@@ -69,7 +69,7 @@ const renderSeats = (row, count = 9)=>(
 {Array.from({ length: count }, (_, i) => {
 const seatId = `${row}${i + 1}`;
 return (
-<button key={seatId} onClick={() => handleSeatClick(seatId)} className={`h-8 w-8 rounded border border-[color:#fe8765]/40 cursor-pointer ${selectedSeats.includes(seatId) && "bg-amber-700 text-white"} ${occupiedSeats.includes(seatId) && "opacity-50"}`}>
+<button key={seatId} onClick={() => handleSeatClick(seatId)} className={`h-8 w-8 rounded border border-[color:#fe8765]/40 cursor-pointer ${selectedSeats.includes(seatId) && "bg-amber-700 text-white"} ${occupiedSeats.includes(seatId) && " opacity-50"}`}>
 {seatId}
 </button>
 );
@@ -182,7 +182,7 @@ key={item.time} onClick={()=> setSelectedTime(item)}>
 </div>
 
 <button onClick={handleProceed} className='flex group items-center gap-1 mt-20 px-10 py-3 text-sm bg-amber-600 hover:bg-amber-700 transition rounded-full font-medium cursor-pointer active:scale-95'>
-Proceed to Checkout
+Proceed to Payment
 <ArrowRightIcon strokeWidth={3} className="w-4 h-4 group-hover:translate-x-1 transition-transform"/>
 </button> {/* add here condition whether time and seat is selected or not */}
 

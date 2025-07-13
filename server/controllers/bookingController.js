@@ -81,12 +81,16 @@ if(!isAvailable) {
 return res.json({success: false, message: "Selected Seats are not available."});
 }
 
-// Get the show details
+
 
 const showData = await Show.findById(showId).populate('movie');
 
-const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
-// Create a new booking
+const expiresAt = new Date(Date.now() + 10 * 60 * 1000);  //storing current time + 10 min
+
+
+if (!showData.screen) {
+  showData.screen = 'Screen 1';  
+}
 
 const booking = await Booking.create({
 user: userId,
@@ -100,7 +104,7 @@ selectedSeats.map((seat)=>{
 showData.occupiedSeats[seat] = userId;
 })
 
-showData.markModified('occupiedSeats');
+showData.markModified('occupiedSeats');   // always do this to stored in save in nested data
 await showData.save();
 
 
