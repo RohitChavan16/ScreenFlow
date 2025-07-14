@@ -13,9 +13,14 @@ const AdminRoute = ({ children }) => {
       toast.error("Please login before accessing Admin Dashboard");
       setHasShownToast(true);
     }
-  }, [isLoggedin, hasShownToast]);
 
-  if (!isLoggedin) {
+    setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    
+  }, [isLoggedin, hasShownToast]);
+ 
+  if (!isLoggedin) {  
     return <Navigate to="/login" replace state={{ from: location.pathname }} />;
   }
 

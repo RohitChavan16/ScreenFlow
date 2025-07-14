@@ -42,8 +42,9 @@ const Navbar = () =>{
     if (data.success) {
       setIsLoggedin(false);
       setUserData(false);
-      toast.success("Logged out successfully!"); // ✅ Show toast
-      navigate("/"); // ✅ Navigate to homepage
+      toast.success("Logged out successfully!"); 
+      navigate("/"); 
+      window.location.reload();
     } else {
       toast.error(data.message);
     }
@@ -67,8 +68,8 @@ const Navbar = () =>{
 
           <Link onClick = {() => {scrollTo(0, 0); setIsOpen(false)} } to='/' className=" hover:scale-105" >Home</Link>
           <Link onClick = {() => {scrollTo(0, 0); setIsOpen(false)}} to='/movies' className=" hover:scale-105" >Movies</Link>
-          <Link onClick = {() => {scrollTo(0, 0); setIsOpen(false)}} to='/' className="hover:scale-105" >Theaters</Link>
           <Link onClick = {() => {scrollTo(0, 0); setIsOpen(false)}} to='/my-bookings' className=" hover:scale-105" >My-Booking</Link>
+          <Link onClick = {() => {scrollTo(0, 0); setIsOpen(false)}} to='/admin' className="hover:scale-105" >Admin</Link> 
           { favoriteMovies.length > 0 && <Link onClick = {() => {scrollTo(0, 0); setIsOpen(false)}} to='/favorite' className="hover:scale-105" >Favorite</Link>}
         </div>
         <div className='flex items-center gap-8'>

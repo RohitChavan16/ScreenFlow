@@ -28,13 +28,14 @@ const Layout = () => {
   }, [isLoggedin, location.pathname]);
 
   useEffect(() => {
-    console.log("✅ Admin Check Decision Point:", { isLoggedin, isAdmin, loading, adminLoading });
-
+    
     if (loading || adminLoading) return;
 
     if (!isLoggedin) {
       toast.error('Please login before accessing admin dashboard');
+       
       navigate('/login');
+      
       return;
     }
 
@@ -47,7 +48,9 @@ const Layout = () => {
  if (!isLoggedin && !loading) {
     // Extra safety: If not logged in and loading is over, redirect immediately
     navigate('/login', { replace: true });
+   
      toast.error('Please login before accessing admin dashboard');
+      window.location.reload();
     return null; // prevent rendering anything
   }
 

@@ -1,4 +1,4 @@
-import { ChartLineIcon, CircleDollarSignIcon, PlayCircleIcon, StarIcon, UsersIcon } from 'lucide-react';
+import { BadgeIndianRupeeIcon, ChartLineIcon, PlayCircleIcon, StarIcon, UsersIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { dummyDashboardData } from '../../assets/assets';
 import Loading from '../../components/Loading';
@@ -24,7 +24,7 @@ const [loading, setLoading] = useState(true);
 
 const dashboardCards = [
 { title: "Total Bookings", value: dashboardData.totalBookings || "0", icon: ChartLineIcon },
-{title: "Total Revenue", value: currency + dashboardData.totalRevenue || "0", icon: CircleDollarSignIcon },
+{title: "Total Revenue", value: currency + dashboardData.totalRevenue || "0", icon: BadgeIndianRupeeIcon },
 {title: "Active Shows", value: dashboardData.activeShows.length || "0", icon: PlayCircleIcon },
 {title: "Total Users", value: dashboardData.totalUser || "0", icon: UsersIcon  } ]
 
@@ -35,6 +35,7 @@ const { data } = await axios.get("/api/admin/dashboard",{withCredentials: true})
 
 if (data.success) {
 setDashboardData(data.dashboardData);
+toast.success(data.message);
 setLoading(false);
 }else{
 toast.error(data.message);

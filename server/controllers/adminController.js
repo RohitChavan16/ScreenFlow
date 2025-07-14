@@ -24,8 +24,8 @@ totalRevenue: bookings.reduce((acc, booking)=> acc + booking.amount, 0),
 activeShows,
 totalUser
 }
-
-res.json({success: true, dashboardData});  // res,json......(mistake)
+const message = req.message;
+res.json({success: true, dashboardData, message});  // res,json......(mistake)
 }
 catch(error) {
   console.error(error);

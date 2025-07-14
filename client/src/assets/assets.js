@@ -3,7 +3,7 @@ import marvelLogo from './marvelLogo.svg'
 import googlePlay from './googlePlay.svg'
 import appStore from './appStore.svg'
 import screenImage from './screenImage.svg'
-import profile from './profile.png'
+import Rohit from './Rohit.jpeg'
 import arrow_icon from './arrow_icon.svg'
 import lock_icon from './lock_icon.svg'
 import mail_icon from './mail_icon.svg'
@@ -18,7 +18,7 @@ export const assets = {
     googlePlay,
     appStore,
     screenImage,
-    profile,
+    Rohit,
       arrow_icon,
     lock_icon,
     mail_icon,

@@ -17,11 +17,14 @@ const adminAuth = async (req, res, next) => {
     if (!user) {
       return res.status(401).json({ message: "Unauthorized: User not found" });
     }
-
+   let message = "";
     if (user.email !== process.env.SENDER_EMAIL) {
-      return res.status(403).json({ message: "Access denied: You are not allowed" });
+        message = "Welcome! You can browse, but editing is restricted";
+    } else {
+         message = "👑 Welcome, Commander";
     }
     
+    req.message = message;
     req.user = user; 
     next(); 
   } catch (error) {

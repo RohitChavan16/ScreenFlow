@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { AppContext } from "./AppContext";  // ✅ Import AppContext
+import { AppContext } from "./AppContext";  
 
 // Set axios default base URL
 axios.defaults.withCredentials = true;
@@ -11,7 +11,7 @@ axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 export const MovieContext = createContext();
 
 export const MovieProvider = ({ children }) => {
-  const { isLoggedin, userData } = useContext(AppContext);   // ✅ Pull login info from AppContext
+  const { isLoggedin, userData } = useContext(AppContext);   
 
   const [isAdmin, setIsAdmin] = useState(false);
   const [shows, setShows] = useState([]);
@@ -33,12 +33,12 @@ export const MovieProvider = ({ children }) => {
     console.log("✅ Admin Check Response:", JSON.stringify(data, null, 2));
     console.log("🎯 Setting isAdmin to:", adminStatus);
 
-    setIsAdmin(adminStatus); // ✅ Make 100% sure it's a boolean
+    setIsAdmin(adminStatus); 
   } catch (error) {
     console.error("❌ Admin check failed:", error.response?.data || error.message);
-    setIsAdmin(false);  // Ensure isAdmin is false on error
+    setIsAdmin(false);  
   } finally {
-    setAdminLoading(false);  // ✅ Mark check as finished
+    setAdminLoading(false);  
   }
 };
 
@@ -79,7 +79,7 @@ export const MovieProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (isLoggedin && userData) {   // ✅ Depend on AppContext state
+    if (isLoggedin && userData) {   
       fetchIsAdmin();
       fetchFavoriteMovies();
     }
@@ -90,8 +90,7 @@ export const MovieProvider = ({ children }) => {
     isAdmin,
     shows,
     favoriteMovies,
-    user: userData,               // ✅ Provide userData as user
-    isLoggedin,                   // ✅ Provide login state
+    user: userData,               
     navigate,
     fetchFavoriteMovies,
     fetchIsAdmin,

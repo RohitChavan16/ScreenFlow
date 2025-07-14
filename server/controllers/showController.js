@@ -56,6 +56,10 @@ export const addShow = async (req, res) =>{
 try {
 const {movieId, showsInput, showPrice, screenType} = req.body;
 let movie = await Movie.findById(movieId);
+   
+if(req.message == "Welcome! You can browse, but editing is restricted"){
+  return res.json({success: false, message: "Looks like you're not an admin — adding shows is restricted"});
+}
 
  for (const show of showsInput) {
       const showDate = show.date;
