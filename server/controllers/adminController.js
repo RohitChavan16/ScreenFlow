@@ -74,3 +74,32 @@ console.error(error);
 res.json({success: false, message: error.message})
 }
 }
+
+
+
+export const verifyCheckInToken = async (req, res) => {
+   try {
+    const { bookingId } = req.params;
+    const { token } = req.query;
+
+    if (!token) return res.status(400).json({ success: false, message: "Missing token" });
+
+    const booking = await Booking.findById(bookingId);
+
+    if (!booking) return res.status(404).json({ success: false, message: "Booking not found" });
+
+    if (booking.checkedIn) return res.status(400).json({ success: false, message: "Already checked in" });
+
+    if (booking.checkInToken !== token) {
+      return res.status(401).json({ success: false, message: "Invalid token" });
+    }
+
+    booking.checkedIn = true;
+    await booking.save();
+
+    res.json({ success: true, message: "Check-in successful!" });
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

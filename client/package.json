@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@babel/runtime": "^7.27.6",
     "@tailwindcss/vite": "^4.1.10",
     "axios": "^1.10.0",
+    "html5-qrcode": "^2.3.8",
     "lucide-react": "^0.516.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

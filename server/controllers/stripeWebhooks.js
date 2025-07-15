@@ -7,6 +7,8 @@ import { sendConfirmationEmail } from "../utils/sendConfirmationEmail.js";
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
 import timezone from 'dayjs/plugin/timezone.js';
+import QRCode from 'qrcode';
+import crypto from 'crypto'; 
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -37,26 +39,32 @@ export const stripeWebhooks = async (request, response) => {
           { isPaid: true, paymentLink: "" },
           { new: true }
         );
-
+         
         if (!booking) break;
+
+        const booking1 = await Booking.findById(bookingId);
+         if (!booking1) break;
+        const checkInToken = crypto.randomBytes(20).toString('hex');
+        booking1.checkInToken = checkInToken;
+        await booking1.save();
+
+        const checkInUrl = `http://localhost:5173/check-in/${booking1._id}?token=${checkInToken}`;
+        const qrCodeDataUrl = await QRCode.toDataURL(checkInUrl);
 
         const show = await Show.findById(booking.show);
         const user = await User.findById(booking.user);
         const movie = show ? await Movie.findById(show.movie) : null;
         const showIST = dayjs.utc(show.showDateTime).tz("Asia/Kolkata").format("DD MMM YYYY, hh:mm A");
 
-console.log("⏱️ Raw showDateTime from DB:", show.showDateTime);
-console.log("🌍 ISO String:", new Date(show.showDateTime).toISOString());
-console.log("🧭 DayJS UTC:", dayjs.utc(show.showDateTime).format());
-console.log("🇮🇳 DayJS IST:", dayjs.utc(show.showDateTime).tz("Asia/Kolkata").format("DD MMM YYYY, hh:mm A"));
-console.log(show.screen);
-
         const htmlContent = `
           <h2>🎉 Booking Confirmed - ${movie?.title || 'Movie'}</h2>
           <p><strong>Show Time:</strong> ${showIST}</p>
-         <p><strong>Screen Type:</strong> ${show?.screen ? show.screen : '<em>Not Available</em>'}</p>  //always add ? : otherwise if screen is null then it will not completely skip
+         <p><strong>Screen Type:</strong> ${show?.screen ? show.screen : '<em>Not Available</em>'}</p>  
           <p><strong>Seats:</strong> ${booking.bookedSeats.join(', ')}</p>
           <p><strong>Amount Paid:</strong> ₹${booking.amount}</p>
+          <h3>📲 Show this QR code at the cinema gate:</h3>
+          <img src="${qrCodeDataUrl}" alt="QR Code for Check-In" width="200" height="200" />
+          <p>This QR code contains your unique check-in link. Please don’t share it.</p>
           <p>Thank you for booking with <strong>ScreenFlow</strong>. Your seat is ready, and your ticket is confirmed! 🍿</p>
         `;
 

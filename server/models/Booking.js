@@ -7,10 +7,11 @@ amount: {type: Number, required: true},
 bookedSeats: {type: Array, required: true},
 isPaid: {type: Boolean, default:false},
 expiresAt: { type: Date },
-paymentLink: {type: String} }, {timestamps: true })
+paymentLink: {type: String},
+checkInToken: {type: String},
+checkedIn: {type: Boolean, default: false}}, {timestamps: true });
 
 const Booking = mongoose.model("Booking", bookingSchema);
 
 export default Booking;
 
-//bookedSeats: { type: [String], required: true }

@@ -26,6 +26,7 @@ import { useMovieContext } from './context/MovieContext';
 import { toast } from 'react-toastify';
 import AdminRoute from './components/admin/AdminLogin';
 import Loading from './components/Loading';
+import QRScanner from './pages/admin/QRScanner';
 
 function App() {
   const location = useLocation();
@@ -57,6 +58,7 @@ const path = location.pathname;
           <Route path="add-shows" element={<AddShows/>} />
           <Route path="list-shows" element={<ListShows/>} />
           <Route path="list-bookings" element={<ListBookings/>} />
+          <Route path="scanner" element={<QRScanner />} />
         </Route>
       </Routes>
        {!isAdminRoute && < Footer />}
