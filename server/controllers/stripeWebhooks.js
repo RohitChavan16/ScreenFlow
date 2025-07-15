@@ -10,6 +10,7 @@ import timezone from "dayjs/plugin/timezone.js";
 import QRCode from "qrcode";
 import crypto from "crypto";
 import cloudinary from "cloudinary";
+import stream from "stream"; // ✅ Needed for buffer to stream
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -38,6 +39,8 @@ export const stripeWebhooks = async (request, response) => {
   try {
     switch (event.type) {
       case "payment_intent.succeeded": {
+        console.log("🎯 Stripe webhook hit");
+
         const paymentIntent = event.data.object;
         const sessionList = await stripeInstance.checkout.sessions.list({
           payment_intent: paymentIntent.id,
@@ -50,29 +53,29 @@ export const stripeWebhooks = async (request, response) => {
           { isPaid: true, paymentLink: "" },
           { new: true }
         );
-
         if (!booking) break;
 
-        const booking1 = await Booking.findById(bookingId);
+        // Generate token and QR
         const checkInToken = crypto.randomBytes(20).toString("hex");
-        booking1.checkInToken = checkInToken;
-        await booking1.save();
+        booking.checkInToken = checkInToken;
+        await booking.save();
 
-        const checkInUrl = `http://localhost:5173/check-in/${booking1._id}?token=${checkInToken}`;
+        const checkInUrl = `https://your-frontend-url.vercel.app/check-in/${booking._id}?token=${checkInToken}`;
         const qrCodeBuffer = await QRCode.toBuffer(checkInUrl);
 
-        const cloudinaryUpload = await cloudinary.v2.uploader.upload_stream(
+        // ⛲ Upload to Cloudinary using stream
+        const uploadStream = cloudinary.v2.uploader.upload_stream(
           {
             folder: "screenflow_qrcodes",
-            resource_type: "image",
-            public_id: `booking-${booking1._id}`,
+            public_id: `booking-${booking._id}`,
           },
           async (error, result) => {
             if (error) {
-              console.error("Cloudinary Upload Error:", error);
+              console.error("❌ Cloudinary upload failed:", error);
               return;
             }
 
+            // ✅ Now continue email logic
             const show = await Show.findById(booking.show);
             const user = await User.findById(booking.user);
             const movie = show ? await Movie.findById(show.movie) : null;
@@ -84,9 +87,7 @@ export const stripeWebhooks = async (request, response) => {
             const htmlContent = `
               <h2>🎉 Booking Confirmed - ${movie?.title || "Movie"}</h2>
               <p><strong>Show Time:</strong> ${showIST}</p>
-              <p><strong>Screen Type:</strong> ${
-                show?.screen || "<em>Not Available</em>"
-              }</p>
+              <p><strong>Screen Type:</strong> ${show?.screen || "<em>Not Available</em>"}</p>
               <p><strong>Seats:</strong> ${booking.bookedSeats.join(", ")}</p>
               <p><strong>Amount Paid:</strong> ₹${booking.amount}</p>
               <h3>📲 Show this QR code at the cinema gate:</h3>
@@ -95,19 +96,24 @@ export const stripeWebhooks = async (request, response) => {
               <p>Thank you for booking with <strong>ScreenFlow</strong>. Your seat is ready, and your ticket is confirmed! 🍿</p>
             `;
 
-            if (user?.email) {
-              await sendConfirmationEmail(
-                user.email,
-                "🎟️ ScreenFlow Booking Confirmation",
-                htmlContent
-              );
-            } else {
-              console.log("❌ No email found for user:", user);
+            try {
+              if (user?.email) {
+                await sendConfirmationEmail(user.email, "🎟️ ScreenFlow Booking Confirmation", htmlContent);
+                console.log("✅ Email sent to:", user.email);
+              } else {
+                console.log("❌ No email found for user:", user);
+              }
+            } catch (err) {
+              console.error("❌ Email sending failed:", err);
             }
           }
         );
 
-        cloudinary.v2.uploader.upload_stream().end(qrCodeBuffer);
+        // 🧠 Pipe buffer to stream
+        const readableStream = new stream.PassThrough();
+        readableStream.end(qrCodeBuffer);
+        readableStream.pipe(uploadStream);
+
         break;
       }
 
