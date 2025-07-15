@@ -46,6 +46,7 @@ setSelectedSeats(prev => prev.includes(seatId) ? prev.filter(seat => seat !== se
 const handleProceed = async() => {
     try{
         if(!user) return toast.error("Please Login before booking");
+        if(!user.isAccountVerified) return toast.error("Please verify your account");
     if (!selectedTime) {
 return toast("Please select time first");
 }

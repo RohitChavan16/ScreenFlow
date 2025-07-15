@@ -88,10 +88,6 @@ const showData = await Show.findById(showId).populate('movie');
 const expiresAt = new Date(Date.now() + 10 * 60 * 1000);  //storing current time + 10 min
 
 
-if (!showData.screen) {
-  showData.screen = 'Screen 1';  
-}
-
 const booking = await Booking.create({
 user: userId,
 show: showId,

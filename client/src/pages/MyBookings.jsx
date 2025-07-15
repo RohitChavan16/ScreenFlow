@@ -115,7 +115,7 @@ const MyBookings = () => {
                 <div className='mb-3'>
                   {timers[item._id] > 0 ? (
                     <>
-                      <p className='text-red-400 text-xs mb-1'>⏳ Please complete your payment before time runs out!</p>
+                      <p className='text-red-400 text-xs mb-1 mr-1 w-80'>⏳ Please complete your payment before time runs out!</p>
                       <p className='text-xl font-mono text-red-600 mb-2'>{formatTime(timers[item._id] || 0)}</p>
                       <Link
                         to={item.paymentLink}

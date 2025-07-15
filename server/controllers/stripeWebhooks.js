@@ -4,6 +4,12 @@ import Show from "../models/Show.js";
 import User from "../models/userModel.js";
 import Movie from "../models/Movie.js";
 import { sendConfirmationEmail } from "../utils/sendConfirmationEmail.js";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc.js';
+import timezone from 'dayjs/plugin/timezone.js';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 
 export const stripeWebhooks = async (request, response) => {
@@ -37,13 +43,21 @@ export const stripeWebhooks = async (request, response) => {
         const show = await Show.findById(booking.show);
         const user = await User.findById(booking.user);
         const movie = show ? await Movie.findById(show.movie) : null;
-        
+        const showIST = dayjs.utc(show.showDateTime).tz("Asia/Kolkata").format("DD MMM YYYY, hh:mm A");
+
+console.log("⏱️ Raw showDateTime from DB:", show.showDateTime);
+console.log("🌍 ISO String:", new Date(show.showDateTime).toISOString());
+console.log("🧭 DayJS UTC:", dayjs.utc(show.showDateTime).format());
+console.log("🇮🇳 DayJS IST:", dayjs.utc(show.showDateTime).tz("Asia/Kolkata").format("DD MMM YYYY, hh:mm A"));
+console.log(show.screen);
+
         const htmlContent = `
           <h2>🎉 Booking Confirmed - ${movie?.title || 'Movie'}</h2>
-          <p><strong>Show Time:</strong> ${show ? new Date(show.showDateTime).toLocaleString() : 'N/A'}</p>
+          <p><strong>Show Time:</strong> ${showIST}</p>
+         <p><strong>Screen Type:</strong> ${show?.screen ? show.screen : '<em>Not Available</em>'}</p>  //always add ? : otherwise if screen is null then it will not completely skip
           <p><strong>Seats:</strong> ${booking.bookedSeats.join(', ')}</p>
           <p><strong>Amount Paid:</strong> ₹${booking.amount}</p>
-          <p>Thank you for booking with <strong>ScreenFlow</strong>!</p>
+          <p>Thank you for booking with <strong>ScreenFlow</strong>. Your seat is ready, and your ticket is confirmed! 🍿</p>
         `;
 
         if (user?.email) {
