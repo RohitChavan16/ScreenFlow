@@ -117,6 +117,27 @@ console.log("Show ID:", selectedTime?.showId);
 };
 
 
+function convertTo24Hour(timeStr) {
+  if (!timeStr || typeof timeStr !== "string") return "00:00";
+
+  const match = timeStr.match(/^(\d{1,2}):(\d{2})(AM|PM)$/i);
+  if (!match) return "00:00";
+
+  let [_, hours, minutes, modifier] = match;
+  hours = parseInt(hours);
+  minutes = parseInt(minutes);
+
+  if (modifier.toUpperCase() === "PM" && hours !== 12) {
+    hours += 12;
+  } else if (modifier.toUpperCase() === "AM" && hours === 12) {
+    hours = 0;
+  }
+
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+}
+
+
+
 useEffect(() => {
 getShow();
 }, [])
@@ -152,8 +173,7 @@ return show ? ( <div>
 
 <div className=" mt-7 space-y-1">
 
-{show.dateTime[date]?.map((item)=>(  // Add null checks before accessing show.dateTime[date]
-
+{show.dateTime[date]?.slice().sort((a, b) => new Date(a.time) - new Date(b.time)).map((item)=>(  
 <div className={`flex items-center gap-2 px-6 py-2 w-max rounded-r-md cursor-pointer transition ${selectedTime?.time === item.time ? "bg-[color:#fe5454] text-white" : "hover:bg-[color:#fe5454]"}`}
 key={item.time} onClick={()=> setSelectedTime(item)}>
 <ClockIcon className="w-4 h-4"/>
