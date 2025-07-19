@@ -9,6 +9,7 @@ import utc from 'dayjs/plugin/utc.js';
 import timezone from 'dayjs/plugin/timezone.js';
 import QRCode from 'qrcode';
 import crypto from 'crypto'; 
+import { Buffer } from "buffer";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -47,8 +48,9 @@ export const stripeWebhooks = async (request, response) => {
         const checkInToken = crypto.randomBytes(20).toString('hex');
         booking1.checkInToken = checkInToken;
         await booking1.save();
+        
 
-        const checkInUrl = `http://localhost:5173/check-in/${booking1._id}?token=${checkInToken}`;
+        const checkInUrl = `https://screenflow-puce.vercel.app/check-in/${booking1._id}?token=${checkInToken}`;
         const qrCodeDataUrl = await QRCode.toDataURL(checkInUrl);
         const qrBuffer = await QRCode.toBuffer(checkInUrl);
 
@@ -63,14 +65,20 @@ export const stripeWebhooks = async (request, response) => {
          <p><strong>Screen Type:</strong> ${show?.screen ? show.screen : '<em>Not Available</em>'}</p>  
           <p><strong>Seats:</strong> ${booking.bookedSeats.join(', ')}</p>
           <p><strong>Amount Paid:</strong> ₹${booking.amount}</p>
-          <h3>📲 Show this QR code at the cinema gate:</h3>
-          <img src="cid:qrcode" alt="QR Code for Check-In" width="200" height="200" />
-          <p>This QR code contains your unique check-in link. Please don’t share it.</p>
+         <p>You can check in directly using the link below:</p>
+          <p><a href="${checkInUrl}">${checkInUrl}</a></p>
+           <p>Your QR code is attached to this email. You can show it at the cinema gate for check-in.</p>
           <p>Thank you for booking with <strong>ScreenFlow</strong>. Your seat is ready, and your ticket is confirmed! 🍿</p>
         `;
 
         if (user?.email) {
-          await sendConfirmationEmail(user.email, '🎟️ ScreenFlow Booking Confirmation', htmlContent);
+          await sendConfirmationEmail(user.email, '🎟️ ScreenFlow Booking Confirmation', htmlContent,  [
+  {
+    filename: 'qrcode.png',
+    content: qrBuffer,
+    contentType: 'image/png'
+  }
+]);
         }  else {
             console.log("❌ No email found for user:", user);
         }
