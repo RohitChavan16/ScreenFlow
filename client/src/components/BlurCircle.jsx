@@ -8,7 +8,7 @@ return (
 style={{top: top, left: left, right: right, bottom: bottom }}>
 
 </div>
-    )
+)
 }
 
 export default BlurCircle; 

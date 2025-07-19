@@ -21,7 +21,19 @@ app.use('/api/stripe', express.raw({type: 'application/json'}), stripeWebhooks);
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({origin : process.env.CLIENT_URL, credentials: true}))  
+const allowedOrigins = process.env.CLIENT_URL.split(',');
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, etc.)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+})); 
 
 
 
