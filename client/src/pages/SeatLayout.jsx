@@ -117,27 +117,6 @@ console.log("Show ID:", selectedTime?.showId);
 };
 
 
-function convertTo24Hour(timeStr) {
-  if (!timeStr || typeof timeStr !== "string") return "00:00";
-
-  const match = timeStr.match(/^(\d{1,2}):(\d{2})(AM|PM)$/i);
-  if (!match) return "00:00";
-
-  let [_, hours, minutes, modifier] = match;
-  hours = parseInt(hours);
-  minutes = parseInt(minutes);
-
-  if (modifier.toUpperCase() === "PM" && hours !== 12) {
-    hours += 12;
-  } else if (modifier.toUpperCase() === "AM" && hours === 12) {
-    hours = 0;
-  }
-
-  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
-}
-
-
-
 useEffect(() => {
 getShow();
 }, [])
