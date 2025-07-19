@@ -29,6 +29,11 @@ export const stripeWebhooks = async (request, response) => {
   try {
     switch (event.type) {
       case "payment_intent.succeeded": {
+        console.log("🔥 Webhook: payment_intent.succeeded");
+console.log("📦 PaymentIntent ID:", paymentIntent.id);
+console.log("📎 Session metadata:", session?.metadata);
+console.log("📍 Booking ID from metadata:", bookingId);
+
         const paymentIntent = event.data.object;
         const sessionList = await stripeInstance.checkout.sessions.list({ payment_intent: paymentIntent.id });
         const session = sessionList.data[0];
@@ -42,13 +47,12 @@ export const stripeWebhooks = async (request, response) => {
          
         if (!booking) break;
 
-        const booking1 = await Booking.findById(bookingId);
-         if (!booking1) break;
+       
         const checkInToken = crypto.randomBytes(20).toString('hex');
-        booking1.checkInToken = checkInToken;
-        await booking1.save();
+        booking.checkInToken = checkInToken;
+        await booking.save();
 
-        const checkInUrl = `http://localhost:5173/check-in/${booking1._id}?token=${checkInToken}`;
+        const checkInUrl = `http://localhost:5173/check-in/${booking._id}?token=${checkInToken}`;
         const qrCodeDataUrl = await QRCode.toDataURL(checkInUrl);
         const qrBuffer = await QRCode.toBuffer(checkInUrl);
 
@@ -71,7 +75,13 @@ export const stripeWebhooks = async (request, response) => {
         `;
 
         if (user?.email) {
-          await sendConfirmationEmail(user.email, '🎟️ ScreenFlow Booking Confirmation', htmlContent);
+          await sendConfirmationEmail(user.email, '🎟️ ScreenFlow Booking Confirmation', htmlContent, [
+      {
+        filename: 'qrcode.png',
+        content: qrBuffer,
+        cid: 'qrcode',
+      },
+    ]);
         }  else {
             console.log("❌ No email found for user:", user);
         }
