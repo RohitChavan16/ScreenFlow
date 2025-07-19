@@ -50,7 +50,7 @@ export const stripeWebhooks = async (request, response) => {
         await booking1.save();
         
 
-        const checkInUrl = `${process.env.CLIENT_URL}/api/admin/check-in/${booking1._id}?token=${checkInToken}`;
+        const checkInUrl = `https://screenflow-4k7u.onrender.com/api/admin/check-in/${booking1._id}?token=${checkInToken}`;
         const qrCodeDataUrl = await QRCode.toDataURL(checkInUrl);
         const qrBuffer = await QRCode.toBuffer(checkInUrl);
 
