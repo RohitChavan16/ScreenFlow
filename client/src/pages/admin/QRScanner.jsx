@@ -1,59 +1,58 @@
 import { useEffect, useRef, useState } from "react";
 import { Html5QrcodeScanner } from "html5-qrcode";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const QRScanner = () => {
   const [scanResult, setScanResult] = useState(null);
   const scannerRef = useRef(null);
+  const hasScannedRef = useRef(false); 
 
   useEffect(() => {
-    if (scannerRef.current) return; // Avoid multiple renders
+    if (scannerRef.current) return;
 
-    scannerRef.current = new Html5QrcodeScanner("qr-reader", {
+    const scanner = new Html5QrcodeScanner("qr-reader", {
       fps: 10,
       qrbox: 250,
     });
 
-    scannerRef.current.render(
-      async (decodedText, decodedResult) => {
+    scanner.render(
+      async (result) => {
+        if (hasScannedRef.current) return; 
+        hasScannedRef.current = true;
+
+        setScanResult(result);
+
         try {
-          const url = new URL(decodedText);
-          const bookingId = url.pathname.split("/").pop(); // /check-in/:bookingId
-          const token = url.searchParams.get("token");
-
-          if (!bookingId || !token) {
-            toast.error("Invalid QR code data.");
-            return;
-          }
-
-          const res = await fetch(`https://screenflow-4k7u.onrender.com/api/admin/check-in/${bookingId}?token=${token}`);
-          const text = await res.text();
-
-          setScanResult(text);
-          toast.success(text);
-          scannerRef.current.clear(); // Stop scanning after success
-        } catch (err) {
-          console.error("Scan error:", err);
-          toast.error("Invalid or broken QR code.");
+          const res = await axios.get(result, { withCredentials: true });
+          toast.success(res.data.message || "Check-in successful!");
+        } catch (error) {
+          const msg =
+            error?.response?.data?.message || "Check-in failed. Try again.";
+          toast.error(msg);
         }
+
+        // Clear scanner and stop camera
+        scanner.clear().then(() => {
+          document.getElementById("qr-reader").innerHTML = "";
+        });
       },
-      (error) => {
-        console.warn("QR scan error:", error);
+      (err) => {
+        console.warn("QR scan error:", err);
       }
     );
 
-    return () => {
-      scannerRef.current.clear().catch((err) => console.error("Clear error", err));
-    };
+    scannerRef.current = scanner;
   }, []);
 
   return (
-    <div className="p-4 text-center">
-      <h2 className="text-2xl font-bold mb-4">🎥 Scan Booking QR</h2>
-      <div id="qr-reader" className="mx-auto max-w-md"></div>
-
+    <div className="flex flex-col items-center gap-4">
+      <h2 className="text-xl font-semibold">Scan QR to Check In</h2>
+      <div id="qr-reader" className="w-[300px]" />
       {scanResult && (
-        <p className="mt-4 text-green-600 font-medium">{scanResult}</p>
+        <p className="text-sm text-gray-500 break-all">
+          Scanned URL: {scanResult}
+        </p>
       )}
     </div>
   );
