@@ -21,7 +21,6 @@ app.use('/api/stripe', express.raw({type: 'application/json'}), stripeWebhooks);
 
 app.use(express.json());
 app.use(cookieParser());
-const allowedOrigins = process.env.CLIENT_URL.split(',');
 
 app.use(cors({origin: process.env.CLIENT_URL ,credentials: true,})); 
 
