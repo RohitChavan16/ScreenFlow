@@ -94,8 +94,10 @@ export const verifyCheckInToken = async (req, res) => {
       return res.status(401).json({ success: false, message: "Invalid token" });
     }
 
-    booking.checkedIn = true;
-    await booking.save();
+     console.log("🔍 bookingId:", bookingId);
+   
+   booking.checkedIn = true;
+await booking.save();
 
     res.json({ success: true, message: "Check-in successful!" });
 
