@@ -96,8 +96,8 @@ export const verifyCheckInToken = async (req, res) => {
 
      console.log("🔍 bookingId:", bookingId);
    
-   booking.checkedIn = true;
-await booking.save();
+await Booking.findByIdAndUpdate(bookingId, { checkedIn: true });
+console.log("Saved status:", booking.checkedIn);
 
     res.json({ success: true, message: "Check-in successful!" });
 
