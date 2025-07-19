@@ -50,6 +50,8 @@ export const stripeWebhooks = async (request, response) => {
 
         const checkInUrl = `http://localhost:5173/check-in/${booking1._id}?token=${checkInToken}`;
         const qrCodeDataUrl = await QRCode.toDataURL(checkInUrl);
+        const qrBuffer = await QRCode.toBuffer(checkInUrl);
+
 
         const show = await Show.findById(booking.show);
         const user = await User.findById(booking.user);
@@ -63,7 +65,7 @@ export const stripeWebhooks = async (request, response) => {
           <p><strong>Seats:</strong> ${booking.bookedSeats.join(', ')}</p>
           <p><strong>Amount Paid:</strong> ₹${booking.amount}</p>
           <h3>📲 Show this QR code at the cinema gate:</h3>
-          <img src="${qrCodeDataUrl}" alt="QR Code for Check-In" width="200" height="200" />
+          <img src="cid:qrcode" alt="QR Code for Check-In" width="200" height="200" />
           <p>This QR code contains your unique check-in link. Please don’t share it.</p>
           <p>Thank you for booking with <strong>ScreenFlow</strong>. Your seat is ready, and your ticket is confirmed! 🍿</p>
         `;
