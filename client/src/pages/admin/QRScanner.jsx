@@ -26,7 +26,7 @@ const QRScanner = () => {
             return;
           }
 
-          const res = await fetch(`/check-in/${bookingId}?token=${token}`);
+          const res = await fetch(`https://screenflow-4k7u.onrender.com/api/admin/check-in/${bookingId}?token=${token}`);
           const text = await res.text();
 
           setScanResult(text);

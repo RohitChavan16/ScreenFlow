@@ -8,6 +8,6 @@ adminRouter.get('/is-admin', adminAuth, isAdmin);
 adminRouter.get('/dashboard', adminAuth, getDashboardData);
 adminRouter.get('/all-shows', adminAuth, getAllShows);
 adminRouter.get('/all-bookings', adminAuth, getAllBookings);
-adminRouter.get('/check-in/:bookingId', adminAuth, verifyCheckInToken);
+adminRouter.get('/check-in/:bookingId', verifyCheckInToken);
 
 export default adminRouter;

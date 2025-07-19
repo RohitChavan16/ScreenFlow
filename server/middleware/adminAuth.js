@@ -4,7 +4,7 @@ import userModel from '../models/userModel.js';
 
 const adminAuth = async (req, res, next) => {
   try {
-    const { token } = req.cookies;          //const token = req.headers.authorization?.split(" ")[1];  study about from where we can get token
+    const { token } = req.cookies || req.query.token;        
 
     if (!token) {
       return res.status(401).json({ message: "Unauthorized: No token provided" });
@@ -34,3 +34,6 @@ const adminAuth = async (req, res, next) => {
 };
 
 export default adminAuth;
+
+
+//const token = req.headers.authorization?.split(" ")[1];  study about from where we can get token
