@@ -4,6 +4,7 @@ ScreenFlow is a full-stack web application that allows users to browse movies, s
 It also features an admin dashboard for managing movies, showtimes, and tracking total bookings and revenue. 
 The project includes role-based authentication, real-time seat selection, and Stripe integration for payments in INR and USD.
 
+Demo Link : https://screenflow-puce.vercel.app/
 
 <img width="1890" height="905" alt="Screenshot 2025-07-19 192711" src="https://github.com/user-attachments/assets/89b577b7-b058-4aff-a828-5b1be2b43561" />
 
