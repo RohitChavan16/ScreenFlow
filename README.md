@@ -111,5 +111,11 @@ Demo Link : https://screenflow-puce.vercel.app/
 <img width="1899" height="901" alt="Screenshot 2025-07-19 202254" src="https://github.com/user-attachments/assets/68ac14d0-c44e-4296-9283-00fff52e3779" />
 
 
+----------------------------------------------Booking Conformation with Ticket is send on your Email--------------------------------------------------
+
+
+<img width="1906" height="897" alt="Screenshot 2025-07-23 080711" src="https://github.com/user-attachments/assets/86a07098-d800-49fb-9e5a-1cff1b65bcee" />
+
+
 
 More features are to be include and this project is not completed yet.
