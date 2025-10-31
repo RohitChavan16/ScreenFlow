@@ -2,9 +2,60 @@ ScreenFlow – Full-Stack Cinema Booking and Administration Solution.
 
 ScreenFlow is a full-stack web application that allows users to browse movies, select showtimes, book seats, and make secure online payments.
 It also features an admin dashboard for managing movies, showtimes, and tracking total bookings and revenue. 
-The project includes role-based authentication, real-time seat selection, and Stripe integration for payments in INR and USD.
+The project includes role-based authentication, real-time seat selection, and Stripe integration for payments in INR.
+</br>
+</br>
+<p align="center">
+  🌴🎄🌳🌲 ⭐💖 - LinkedIn Post - 💖⭐ 🌲🌳🎄🌴
+</p>
 
-Demo Link : https://screenflow-puce.vercel.app/
+After weeks of building, debugging, and learning, I'm excited to share ScreenFlow, a complete Cinema Booking and Administration Solution.
+
+## 💡 Why ScreenFlow?</br>
+ Many local theaters still rely on outdated tools to manage shows and bookings — with no real dashboard or insight into audience trends.
+
+
+## 🛠️What does ScreenFlow offer? </br>
+✅ Smooth seat booking for users with Stripe payments.</br>
+✅ Admin dashboard for theaters to add/manage shows & movies.</br>
+✅ QR Code check-in system at the entry gate.</br>
+✅ Real-time insights into bookings and user data.</br>
+✅ Added a seat recommendation system to help users pick the best seats quickly!</br>
+✅ Role-based login for users and admins (to make it easier to explore, the admin panel is visible even to regular users — but only real admins can make changes).</br>
+✅ **Email Notifications** – Booking confirmation with embedded QR code.</br>
+✅ **Auto Cleanup** – Cron jobs automatically remove expired bookings.</br>
+
+## 🛠Tech Stack & Tools Used
+Frontend: React.js, Tailwind CSS, Axios, React Toastify, QRCode.react.</br></br>
+Backend: Node.js, Express.js, MongoDB, Mongoose, JWT, nodemailer</br></br>
+Authentication: JWT + Cookies with role-based access (user, admin)</br></br>
+Payments: Stripe API for secure booking transactions</br></br>
+Movie Data: TMDB API to fetch latest movie info (posters, titles, etc.)</br></br>
+QR Functionality: html5-qrcode (scanner), qrcode.react (generator)</br></br>
+Hosting: Vercel (Frontend), Render (Backend)</br></br>
+Nodemailer+Brevo: Email sending (confirmation, QR code delivery)</br></br>
+Cron Job: Auto-removes expired bookings to free up seats.</br></br>
+
+<p align="center">
+  <a href="https://screenflow-puce.vercel.app/" target="_blank">
+    <img src="https://img.shields.io/badge/Live%20Demo-Visit-blue?style=for-the-badge&logo=vercel" alt="Live Demo"/>
+  </a>
+  <a href="https://github.com/yourusername/screenflow" target="_blank">
+    <img src="https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github" alt="GitHub Repo"/>
+  </a>
+</p>
+
+### What I Learned & Applied
+- 🔹 **System Design Thinking** — separated user/admin modules, implemented stateless APIs, and planned for scalability.
+- 🔹 **Integration Flow** – Connected TMDB data → booking → Stripe payments → QR check-in → cron-based cleanup.
+- 🔹 **Backend Architecture** — designed REST APIs, database schemas, and cron jobs for real-time automation.
+- 🔹 **Algorithmic Logic** – Built seat recommendation and seat hold/release systems with efficiency and accuracy.
+- 🔹 **Security Practices** — implemented JWT authentication, cookie sessions, and protected admin routes.
+- 🔹 **Edge Case Handling** – Covered expired bookings, failed payments, invalid tokens, and session reloads.
+- 🔹 **DevOps Mindset** — handled production hosting, environment variables, and build optimization for deployment.
+- 🔹 **User Experience Focus** — implemented real-time seat status, email notifications, and seat recommendations.
+
+This project helped me gain confidence in handling all aspects of full-stack development — from frontend design to backend logic, from API security to deployment.
 
 <img width="1890" height="905" alt="Screenshot 2025-07-19 192711" src="https://github.com/user-attachments/assets/89b577b7-b058-4aff-a828-5b1be2b43561" />
 
@@ -51,22 +102,32 @@ Demo Link : https://screenflow-puce.vercel.app/
 
 
 
-### ⚙️ Backend
-- **Node.js**, **Express.js**
-- **MongoDB**, **Mongoose**
-- **Stripe** for payments
-- **Nodemailer** for email delivery
-- **Cron Jobs** for auto seat expiry
-- **JWT**, **Cookie-based Auth**
-- QR code token system for check-in
-- Deployed on **Render**
+### ⚙️ **Backend Architecture**
+
+| Layer | Technologies | Purpose |
+|-------|---------------|----------|
+| **Server** | Node.js, Express.js | RESTful API, business logic |
+| **Database** | MongoDB, Mongoose | Data persistence & schema modeling |
+| **Authentication** | JWT, Cookies | Secure role-based access |
+| **Payments** | Stripe API | Handles secure booking transactions |
+| **External API** | TMDB API | Fetches live movie data (titles, posters, genres) |
+| **Email Service** | Nodemailer + Brevo | Sends booking confirmations & QR codes |
+| **Automation** | Cron Jobs | Auto-removes expired bookings |
+| **Deployment** | Render (Backend) | Production-ready hosting |
+
 
 ### 💻 Frontend
-- **React.js**, **Tailwind CSS**
-- **React Router**
-- **Axios**, **React Toastify**
-- **html5-qrcode** for QR scanning
-- Deployed on **Vercel**
+| Category | Technology |
+|-----------|-------------|
+| **Framework** | React.js (Vite / CRA) |
+| **Styling** | Tailwind CSS |
+| **Routing** | React Router DOM |
+| **State Management** | React Context / Redux Toolkit (if used) |
+| **API Integration** | Axios |
+| **Authentication** | JWT-based (via backend API) |
+| **Payment Gateway** | Stripe (Frontend Integration) |
+| **External API** | TMDB (for movie metadata, posters, etc) |
+| **Build & Deployment** | Vite build → Render |
 
 
 <img width="1892" height="908" alt="Screenshot 2025-07-11 204933" src="https://github.com/user-attachments/assets/487e73db-e569-4603-bfde-dc2300f3bbae" />
@@ -111,11 +172,111 @@ Demo Link : https://screenflow-puce.vercel.app/
 <img width="1899" height="901" alt="Screenshot 2025-07-19 202254" src="https://github.com/user-attachments/assets/68ac14d0-c44e-4296-9283-00fff52e3779" />
 
 
-----------------------------------------------Booking Conformation with Ticket is send on your Email--------------------------------------------------
+----------------------------------------------Booking Confirmation with Ticket is send on your Email--------------------------------------------------
 
 
 <img width="1906" height="897" alt="Screenshot 2025-07-23 080711" src="https://github.com/user-attachments/assets/86a07098-d800-49fb-9e5a-1cff1b65bcee" />
 
+## 🚀 Deployment
 
+**Frontend:** Vercel  </br>
+**Backend:** Render  </br>
+**Database:** MongoDB Atlas </br> 
+**Email Service:** Brevo (SMTP)  </br>
+**Payments:** Stripe</br>
+</br>
 
-More features are to be include and this project is not completed yet.
+## 🤝 Contributing</br>
+1. Fork the repo</br>
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)</br>
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)</br>
+4. Push to branch (`git push origin feature/AmazingFeature`)</br>
+5. Open a Pull Request
+</br>
+
+## ⚙️ Installation & Setup
+
+Follow these steps to set up the project locally 👇
+
+1️⃣ Clone the Repository</br>
+git clone https://github.com/RohitChavan16/ScreenFlow.git</br>
+cd ScreenFlow</br>
+</br>
+2️⃣ Backend Setup</br>
+cd server</br>
+npm install</br>
+
+</br>
+Create a .env file in the server folder and add the following:</br>
+PORT=</br>
+MONGODB_URL=</br>
+JWT_SECRET=</br>
+NODE_ENV=</br>
+CLIENT_URL=</br>
+SMTP_USER=</br>
+SMTP_PASS=</br>
+SENDER_EMAIL=</br>
+TMDB_API_KEY=</br>
+STRIPE_PUBLISHABLE_KEY=</br>
+STRIPE_SECRET_KEY=</br>
+STRIPE_WEBHOOK_SECRET=</br>
+CLOUDINARY_CLOUD_NAME=</br>
+CLOUDINARY_API_KEY=</br>
+CLOUDINARY_API_SECRET=</br>
+</br>
+
+Then start the server:
+</br>
+npm run dev
+</br>
+</br>
+</br>
+3️⃣ Frontend Setup</br>
+cd client</br>
+npm install</br>
+</br>
+
+Create a .env file in the client folder:
+</br>
+VITE_BACKEND_URL=</br> 
+VITE_CURRENCY='₹'</br>
+VITE_TMDB_IMAGE_BASE_URL=</br> 
+
+</br>
+Then run:
+</br>
+npm run dev
+</br>
+4️⃣ Open the app </br>
+
+Frontend: http://localhost:5173
+</br>
+Backend: http://localhost:5000 (or your PORT)
+</br>
+
+## MIT License
+</br>
+Copyright (c) 2025 Rohit Chavan</br>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+</br>
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+</br>
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</br>
+
+## Author
+ROHIT CHAVAN </br>
+@RohitChavan16
