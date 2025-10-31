@@ -122,7 +122,7 @@ This project helped me gain confidence in handling all aspects of full-stack dev
 | **Framework** | React.js (Vite / CRA) |
 | **Styling** | Tailwind CSS |
 | **Routing** | React Router DOM |
-| **State Management** | React Context / Redux Toolkit (if used) |
+| **State Management** | React Context / Redux Toolkit |
 | **API Integration** | Axios |
 | **Authentication** | JWT-based (via backend API) |
 | **Payment Gateway** | Stripe (Frontend Integration) |
