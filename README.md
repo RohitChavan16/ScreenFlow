@@ -113,7 +113,7 @@ This project helped me gain confidence in handling all aspects of full-stack dev
 | **External API** | TMDB API | Fetches live movie data (titles, posters, genres) |
 | **Email Service** | Nodemailer + Brevo | Sends booking confirmations & QR codes |
 | **Automation** | Cron Jobs | Auto-removes expired bookings |
-| **Deployment** | Render (Backend) | Production-ready hosting |
+| **Deployment** | Render/Vercel(using...) (Backend) | Production-ready hosting |
 
 
 ### 💻 Frontend
@@ -122,12 +122,12 @@ This project helped me gain confidence in handling all aspects of full-stack dev
 | **Framework** | React.js (Vite / CRA) |
 | **Styling** | Tailwind CSS |
 | **Routing** | React Router DOM |
-| **State Management** | React Context / Redux Toolkit |
+| **State Management** | React Context |
 | **API Integration** | Axios |
 | **Authentication** | JWT-based (via backend API) |
 | **Payment Gateway** | Stripe (Frontend Integration) |
 | **External API** | TMDB (for movie metadata, posters, etc) |
-| **Build & Deployment** | Vite build → Render |
+| **Build & Deployment** | Vercel |
 
 
 <img width="1892" height="908" alt="Screenshot 2025-07-11 204933" src="https://github.com/user-attachments/assets/487e73db-e569-4603-bfde-dc2300f3bbae" />
