@@ -16,6 +16,8 @@ const ResetPassword = () => {
   const [isEmailSent, setIsEmailSent] = useState("");
   const [otp, setOtp] = useState(0);
   const [isOtpSubmitted, setIsOtpSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
 
   const inputRefs = useRef([]);
 
@@ -43,7 +45,7 @@ const ResetPassword = () => {
 
   const onSubmitEmail = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const { data } = await axios.post(
         backendUrl + "/api/auth/send-reset-otp",
@@ -54,19 +56,24 @@ const ResetPassword = () => {
       data.success && setIsEmailSent(true);
     } catch (error) {
       toast.error(error.message);
-    }
+    } finally {
+    setLoading(false);
+  }
   };
 
   const onSubmitOTP = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const otpArray = inputRefs.current.map((e) => e.value);
     setOtp(otpArray.join(""));
     setIsOtpSubmitted(true);
-    
+    setLoading(false);
   };
 
   const onSubmitNewPassword = async (e) => {
     e.preventDefault();
+
+     setLoading(true);
 
     try {
       const { data } = await axios.post(
@@ -78,7 +85,9 @@ const ResetPassword = () => {
       data.success && navigate("/login");
     } catch (error) {
       toast.error(error.message);
-    }
+    } finally {
+    setLoading(false);
+  }
   };
 
   return (
@@ -107,8 +116,38 @@ const ResetPassword = () => {
             <input type="email" placeholder="Email id" className="bg-transparent outline-none text-white" value={email} onChange={(e) => setEmail(e.target.value)} required
             />
           </div>
-          <button className="w-full py-2.5 bg-gradient-to-r from-indigo-500 to-indigo-900 text-white rounded-full mt-3 cursor-pointer ">
-            Submit
+          <button 
+          disabled={loading}
+          className={`w-full py-2.5 rounded-full font-medium text-white mt-3
+           ${loading ? "bg-indigo-700 opacity-80 cursor-not-allowed" : "bg-gradient-to-r from-indigo-500 to-indigo-900 cursor-pointer"}
+           `}>
+            {loading ? (
+       <div className="flex items-center justify-center gap-2">
+        <svg
+        className="w-5 h-5 animate-spin text-white"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        ></circle>
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8v8H4z"
+        ></path>
+        </svg>
+        <span>Processing...</span>
+        </div>
+        ) : (
+        "Submit"
+        )}
           </button>
         </form>
       )}
@@ -133,9 +172,41 @@ const ResetPassword = () => {
                 />
               ))}
           </div>
-          <button className="w-full py-2.5 bg-gradient-to-r from-indigo-500 to-indigo-900 text-white rounded-full cursor-pointer ">
-            Submit
-          </button>
+          <button
+           type="submit"
+           disabled={loading}
+           className={`w-full py-2.5 rounded-full font-medium text-white mt-3
+           ${loading ? "bg-indigo-700 opacity-80 cursor-not-allowed" : "bg-gradient-to-r from-indigo-500 to-indigo-900 cursor-pointer"}
+           `}
+          >
+       {loading ? (
+       <div className="flex items-center justify-center gap-2">
+        <svg
+        className="w-5 h-5 animate-spin text-white"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        ></circle>
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8v8H4z"
+        ></path>
+        </svg>
+        <span>Processing...</span>
+        </div>
+        ) : (
+        "Submit"
+        )}
+   </button>
         </form>
       )}
 
@@ -157,8 +228,38 @@ const ResetPassword = () => {
             <input type="password" placeholder="Password" className="bg-transparent outline-none text-white" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required
             />
           </div>
-          <button className="w-full py-2.5 bg-gradient-to-r from-indigo-500 to-indigo-900 text-white rounded-full mt-3 cursor-pointer ">
-            Submit
+          <button 
+          disabled={loading}
+          className={`w-full py-2.5 rounded-full font-medium text-white mt-3
+           ${loading ? "bg-indigo-700 opacity-80 cursor-not-allowed" : "bg-gradient-to-r from-indigo-500 to-indigo-900 cursor-pointer"}
+           `}>
+            {loading ? (
+       <div className="flex items-center justify-center gap-2">
+        <svg
+        className="w-5 h-5 animate-spin text-white"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        ></circle>
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8v8H4z"
+        ></path>
+        </svg>
+        <span>Processing...</span>
+        </div>
+        ) : (
+        "Submit"
+        )}
           </button>
         </form>
       )}
