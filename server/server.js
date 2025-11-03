@@ -20,9 +20,8 @@ connectDB();
 app.use('/api/stripe', express.raw({type: 'application/json'}), stripeWebhooks);
 
 app.use(cors({origin: process.env.CLIENT_URL ,credentials: true,})); 
-
-app.use(express.json());
 app.use(cookieParser());
+app.use(express.json());
 
 
 app.get('/', (req, res) => {res.send("Api Is Working best")});
