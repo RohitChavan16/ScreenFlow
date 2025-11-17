@@ -40,7 +40,7 @@ Cron Job: Auto-removes expired bookings to free up seats.</br></br>
   <a href="https://screenflow-puce.vercel.app/" target="_blank">
     <img src="https://img.shields.io/badge/Live%20Demo-Visit-blue?style=for-the-badge&logo=vercel" alt="Live Demo"/>
   </a>
-  <a href="https://github.com/yourusername/screenflow" target="_blank">
+  <a href="https://github.com/RohitChavan16/ScreenFlow" target="_blank">
     <img src="https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github" alt="GitHub Repo"/>
   </a>
 </p>
