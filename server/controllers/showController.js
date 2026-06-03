@@ -144,7 +144,7 @@ if(showsToCreate.length > 0){
         <h2>New Show Alert: ${movie.title}</h2>
         <p>A new show for <strong>${movie.title}</strong> has just been added to ScreenFlow!</p>
         <p>Don't miss out. Book your tickets now!</p>
-        <a href="${process.env.FRONTEND_URL}/movies/${movieId}" style="background:#fe5454;color:white;padding:10px 15px;border-radius:5px;text-decoration:none;">View Show</a>
+        <a href="${process.env.CLIENT_URL}/movies/${movieId}" style="background:#fe5454;color:white;padding:10px 15px;border-radius:5px;text-decoration:none;">View Show</a>
       `;
 
       for (const user of users) {
